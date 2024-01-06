@@ -14,8 +14,5 @@ def classify(sentence):
         messages = message,
         model = gptModel
     )
-    print(classification.choices[0].message.content)
-    # return classification.choices[0].message["content"]
-
-if __name__ == "__main__":
-    print(classify("why are chinese bad at driving"))
+    response = classification.choices[0].message.content
+    return response
