@@ -12,6 +12,7 @@ class MyClient(discord.Client):
         # Initialize SQLite3
         self.connection: object = sqlite3.connect('database.db')
         self.cursor: object = self.connection.cursor()
+        # self.safety = safety
 
     async def on_ready(self) -> None:
         # Create database.db if it doesn't exist
@@ -33,7 +34,7 @@ class MyClient(discord.Client):
         # Bot is ready
         print(f"Logged on as {self.user}!")
 
-    async def on_message(self, message) -> None:
+    async def on_message(self, message, ) -> None:
         if message.author.bot:
             return
 
@@ -41,7 +42,22 @@ class MyClient(discord.Client):
 
         if message.content == "yeet":
             await message.delete()
-            await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
+
+            embed = discord.Embed(
+                title = "Warning!",
+                description = "Please view the following information carefully and review any comments before viewing the message.",
+                color = 0xea3e3e
+                )
+            
+            name = f"The following message from @{message.author} has been censored"
+            reason = "This sentence contains a racial stereotype and is offensive. It perpetuates harmful stereotypes about a specific ethnicity. It is inappropriate and disrespectful."
+            embed.add_field(name = name, value = f"||{message.content}||", inline = False)
+            embed.add_field(name = "", value = reason, inline = False)
+            await message.channel.send(embed = embed)
+
+
+            # await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
+
 
 
 if __name__ == '__main__':
