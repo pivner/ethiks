@@ -36,7 +36,7 @@ class MyClient(discord.Client):
     async def on_message(self, message) -> None:
         if message.author.bot:
             return
-
+        
         print(f"Message from {message.author}: {message.content}")
 
 if __name__ == '__main__':
