@@ -1,4 +1,5 @@
-﻿# hackED2024-team_ethiks-pingu-discord-bot
+﻿# Pingu Discord Bot
+![image](https://github.com/budechi/ethiks/assets/128566227/e7a3e238-8350-4fe0-8936-fbacb8235097)
 ## Background
 Pingu is one of the most lovable characters in animation. He loves many things such as playing around, eating fish and messing with his little brother. Something he does not like is hate speech directed to any groups of people. Pingu will help us monitor discord servers for such hate speech and harmful content.
 
