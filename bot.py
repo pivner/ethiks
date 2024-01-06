@@ -39,6 +39,11 @@ class MyClient(discord.Client):
 
         print(f"Message from {message.author}: {message.content}")
 
+        if message.content == "yeet":
+            await message.delete()
+            await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
+
+
 if __name__ == '__main__':
     intents: object = discord.Intents.default()
     intents.message_content = True
