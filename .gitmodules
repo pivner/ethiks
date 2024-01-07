@@ -1,3 +1,0 @@
-[submodule "hate_speech_en"]
-	path = hate_speech_en
-	url = https://huggingface.co/IMSyPP/hate_speech_en
