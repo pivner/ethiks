@@ -72,8 +72,8 @@ class MyClient(discord.Client):
 
             if newScore <= 0:
                 # Time out logic
-                timeout = 30 #seconds
-                await message.author.timeout(timedelta(seconds = 30))
+                timeout = 10 #seconds
+                await message.author.timeout(timedelta(seconds = timeout))
             
                 directMsg: object = discord.Embed(
                     title = "Timeout Notice",
