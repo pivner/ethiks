@@ -2,6 +2,8 @@ import discord
 import os
 import sqlite3
 
+import hateclassify as hc
+
 from apikeys import *
 from hateclassify import *
 
@@ -13,7 +15,7 @@ class MyClient(discord.Client):
         # Initialize SQLite3
         self.connection: object = sqlite3.connect('database.db')
         self.cursor: object = self.connection.cursor()
-        # self.safety = safety
+        # self.safety = hc.is_safe(hc.classify())
 
     async def on_ready(self) -> None:
         # Create database.db if it doesn't exist
@@ -56,6 +58,9 @@ class MyClient(discord.Client):
         response = self.cursor.execute(f'SELECT * FROM censorship WHERE user_id = {message.author.id};').fetchall()
         print(response)
 
+            # await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
+
+    
 
 if __name__ == '__main__':
     intents: object = discord.Intents.default()
