@@ -13,26 +13,21 @@ class MyClient(discord.Client):
         super().__init__(intents=intents)
 
         # Initialize SQLite3
-        self.connection: object = sqlite3.connect('database.db')
+        self.connection: object = sqlite3.connect('database.sqlite')
         self.cursor: object = self.connection.cursor()
         # self.safety = hc.is_safe(hc.classify())
 
     async def on_ready(self) -> None:
         # Create database.db if it doesn't exist
-        if not os.path.isfile('./database.db'):
-            f: object = open('database.db', 'wb')
-            print("Created database.db file")
+        if not os.path.isfile('./database.sqlite'):
+            f: object = open('database.sqlite', 'wb')
+            print("Created database.sqlite file")
             f.close()
 
         # Create censorship table if it doesn't exist
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS censorship(
                         user_id INT PRIMARY KEY, 
-                        social_credit INT NOT NULL,
-                        msg1 TEXT NOT NULL, 
-                        msg2 TEXT NOT NULL, 
-                        msg3 TEXT NOT NULL, 
-                        msg4 TEXT NOT NULL,
-                        msg5 TEXT NOT NULL);""")
+                        social_credit INT NOT NULL);""")
         
         # Bot is ready
         print(f"Logged on as {self.user}!")
@@ -41,24 +36,27 @@ class MyClient(discord.Client):
         if message.author.bot:
             return
 
-        self.cursor.execute(f'INSERT OR IGNORE INTO censorship (user_id, social_credit, msg1, msg2, msg3, msg4, msg5) VALUES({message.author.id}, 1000, "", "", "", "", "");')
-        isSafe, reason, score = is_safe(message.content)
+        self.cursor.execute(f'INSERT OR IGNORE INTO censorship (user_id, social_credit) VALUES({message.author.id}, 1000);')
+       
+       
+        isSafe, reason, score = is_safe(classify(message.content))
+
         if not isSafe:
             await message.delete()
             embed: object = discord.Embed(
                 title = "Warning!",
-                description = "Please view the following information carefully and review any comments before viewing the message.",
+                description = f"Please review the following comments carefully as the message sent from <@{message.author.id}> may contain sensitive content.",
                 color = 0xea3e3e
             )
-            name: str = f"The following message from <@{message.author.id}> has been censored"
-            embed.add_field(name = name, value = f"||{message.content}||", inline = False)
+            embed.add_field(name = "", value = f"||{message.content}||", inline = False)
             embed.add_field(name = "", value = reason, inline = False)
             await message.channel.send(embed = embed)
-
+          
+            response = self.cursor.execute(f'SELECT social_credit FROM censorship WHERE user_id = {message.author.id}').fetchall()
+            newScore = int(response[0][0]) - score
+            self.cursor.execute(f'REPLACE INTO censorship (user_id, social_credit) VALUES({message.author.id}, {newScore});')
         response = self.cursor.execute(f'SELECT * FROM censorship WHERE user_id = {message.author.id};').fetchall()
         print(response)
-
-            # await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
 
     
 

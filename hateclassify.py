@@ -28,5 +28,6 @@ def classify(sentence) -> str:
     return response
 
 def is_safe(rawInput) -> tuple:
-    stripped_input: str = rawInput.strip().split("\n")
-    return(True, None, None) if stripped_input[0] == "SAFE" else (False, stripped_input[1].strip(), stripped_input[2].strip())
+    stripped_input = rawInput.strip().split("\n")
+    print(stripped_input)
+    return(True, None, None) if stripped_input[0] == "SAFE" else (False, stripped_input[1].strip(), int(stripped_input[2].strip()))
