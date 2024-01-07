@@ -56,9 +56,6 @@ class MyClient(discord.Client):
             newScore = int(response[0][0]) - score
             self.cursor.execute(f'REPLACE INTO censorship (user_id, social_credit) VALUES({message.author.id}, {newScore});')
 
-            response = self.cursor.execute(f'SELECT social_credit FROM censorship WHERE user_id = {message.author.id}').fetchall()
-            newScore = int(response[0][0]) - score
-
             # controls the Direct Message Embed skip over this bit
             directMsg: object = discord.Embed(
                 title = "Warning!",
