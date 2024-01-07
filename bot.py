@@ -24,40 +24,37 @@ class MyClient(discord.Client):
 
         # Create censorship table if it doesn't exist
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS censorship(
-                       user_id INT PRIMARY KEY, 
-                       social_credit INT NOT NULL, 
-                       msg1 TEXT NOT NULL, 
-                       msg2 TEXT NOT NULL, 
-                       msg3 TEXT NOT NULL, 
-                       msg4 TEXT NOT NULL,
-                       msg5 TEXT NOT NULL)""")
+                        user_id INT PRIMARY KEY, 
+                        social_credit INT NOT NULL,
+                        msg1 TEXT NOT NULL, 
+                        msg2 TEXT NOT NULL, 
+                        msg3 TEXT NOT NULL, 
+                        msg4 TEXT NOT NULL,
+                        msg5 TEXT NOT NULL);""")
         
         # Bot is ready
         print(f"Logged on as {self.user}!")
 
-    async def on_message(self, message, ) -> None:
+    async def on_message(self, message) -> None:
         if message.author.bot:
             return
-        
-        print(f"Message from {message.author}: {message.content}")
 
-        if message.content == "yeet":
+        self.cursor.execute(f'INSERT OR IGNORE INTO censorship (user_id, social_credit, msg1, msg2, msg3, msg4, msg5) VALUES({message.author.id}, 1000, "", "", "", "", "");')
+        isSafe, reason, score = is_safe(message.content)
+        if not isSafe:
             await message.delete()
-
             embed: object = discord.Embed(
                 title = "Warning!",
                 description = "Please view the following information carefully and review any comments before viewing the message.",
                 color = 0xea3e3e
-                )
-            
-            name = f"The following message from @{message.author} has been censored"
-            reason = "This sentence contains a racial stereotype and is offensive. It perpetuates harmful stereotypes about a specific ethnicity. It is inappropriate and disrespectful."
+            )
+            name: str = f"The following message from <@{message.author.id}> has been censored"
             embed.add_field(name = name, value = f"||{message.content}||", inline = False)
             embed.add_field(name = "", value = reason, inline = False)
             await message.channel.send(embed = embed)
 
-            # await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
-
+        response = self.cursor.execute(f'SELECT * FROM censorship WHERE user_id = {message.author.id};').fetchall()
+        print(response)
 
 
 if __name__ == '__main__':
