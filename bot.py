@@ -54,7 +54,6 @@ class MyClient(discord.Client):
           
             response = self.cursor.execute(f'SELECT social_credit FROM censorship WHERE user_id = {message.author.id}').fetchall()
             newScore = int(response[0][0]) - score
-            self.cursor.execute(f'REPLACE INTO censorship (user_id, social_credit) VALUES({message.author.id}, {newScore});')
 
             # controls the Direct Message Embed skip over this bit
             directMsg: object = discord.Embed(
@@ -71,7 +70,6 @@ class MyClient(discord.Client):
         response = self.cursor.execute(f'SELECT * FROM censorship WHERE user_id = {message.author.id};').fetchall()
         print(response)
 
-    
 
 if __name__ == '__main__':
     intents: object = discord.Intents.default()
