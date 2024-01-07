@@ -2,6 +2,8 @@ import discord
 import os
 import sqlite3
 
+import hateclassify as hc
+
 from apikeys import *
 
 class MyClient(discord.Client):
@@ -50,7 +52,7 @@ class MyClient(discord.Client):
                 )
             
             name = f"The following message from @{message.author} has been censored"
-            reason = "This sentence contains a racial stereotype and is offensive. It perpetuates harmful stereotypes about a specific ethnicity. It is inappropriate and disrespectful."
+            # reason = "This sentence contains a racial stereotype and is offensive. It perpetuates harmful stereotypes about a specific ethnicity. It is inappropriate and disrespectful."
             embed.add_field(name = name, value = f"||{message.content}||", inline = False)
             embed.add_field(name = "", value = reason, inline = False)
             await message.channel.send(embed = embed)
