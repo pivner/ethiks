@@ -45,7 +45,7 @@ class MyClient(discord.Client):
             await message.delete()
             embed: object = discord.Embed(
                 title = "Warning!",
-                description = f"Please review the following comments carefully before viewing the message sent by <@{message.author.id}> as it may contain sensitive content.",
+                description = f"Please review the following comments carefully before viewing the message sent by <@{message.author.id}> as it may contain sensitive content or misinformation.",
                 color = 0xea3e3e
             )
             embed.add_field(name = "", value = f"||{message.content}||", inline = False)
@@ -62,7 +62,7 @@ class MyClient(discord.Client):
             # controls the Direct Message Embed skip over this bit
             directMsg: object = discord.Embed(
                 title = "Warning!",
-                description = f"Please review the following comments carefully as your message has been flagged for containing sensitive content. If you think this is a mistake, please contact server admin. NOOT NOOT!",
+                description = f"Please review the following comments carefully as your message has been flagged for containing sensitive content or misinformation. If you think this is a mistake, please contact server admin. NOOT NOOT!",
                 color = 0xfee12b
             )
             directMsg.add_field(name = "You said:", value = f"\"{message.content}\"", inline = False)
