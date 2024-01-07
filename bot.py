@@ -15,7 +15,7 @@ class MyClient(discord.Client):
         # Initialize SQLite3
         self.connection: object = sqlite3.connect('database.db')
         self.cursor: object = self.connection.cursor()
-        # self.safety = safety
+        # self.safety = hc.is_safe(hc.classify())
 
     async def on_ready(self) -> None:
         # Create database.db if it doesn't exist
@@ -53,14 +53,14 @@ class MyClient(discord.Client):
                 )
             
             name = f"The following message from @{message.author} has been censored"
-            # reason = "This sentence contains a racial stereotype and is offensive. It perpetuates harmful stereotypes about a specific ethnicity. It is inappropriate and disrespectful."
+            reason = "This sentence contains a racial stereotype and is offensive. It perpetuates harmful stereotypes about a specific ethnicity. It is inappropriate and disrespectful."
             embed.add_field(name = name, value = f"||{message.content}||", inline = False)
             embed.add_field(name = "", value = reason, inline = False)
             await message.channel.send(embed = embed)
 
             # await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
 
-
+    
 
 if __name__ == '__main__':
     intents: object = discord.Intents.default()
