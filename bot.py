@@ -5,6 +5,7 @@ import sqlite3
 import hateclassify as hc
 
 from apikeys import *
+from hateclassify import *
 
 class MyClient(discord.Client):
 
@@ -39,13 +40,13 @@ class MyClient(discord.Client):
     async def on_message(self, message, ) -> None:
         if message.author.bot:
             return
-
+        
         print(f"Message from {message.author}: {message.content}")
 
         if message.content == "yeet":
             await message.delete()
 
-            embed = discord.Embed(
+            embed: object = discord.Embed(
                 title = "Warning!",
                 description = "Please view the following information carefully and review any comments before viewing the message.",
                 color = 0xea3e3e
@@ -56,7 +57,6 @@ class MyClient(discord.Client):
             embed.add_field(name = name, value = f"||{message.content}||", inline = False)
             embed.add_field(name = "", value = reason, inline = False)
             await message.channel.send(embed = embed)
-
 
             # await message.channel.send(f"The following message from @{message.author}, has been censored: ||{message.content}||\n\nBecause: <REASON>")
 
